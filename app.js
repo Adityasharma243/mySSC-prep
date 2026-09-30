@@ -1,5 +1,8 @@
 /* mySSC prep - builds every page from content.js. You should not need to edit this. */
 (function () {
+  /* Notes and formula sheets are hidden for now. Change false to true to bring them back. */
+  var SHOW_NOTES = false;
+
   var main = document.getElementById("app");
   var page = document.body.getAttribute("data-page");
   var params = new URLSearchParams(location.search);
@@ -17,10 +20,29 @@
     main.appendChild(link("index.html", "button", "Back to home"));
   }
 
+  /* Hands a list of questions to script.js once it is ready. */
+  function start(list) {
+    function go() { window.startQuiz(list); }
+    if (window.startQuiz) go(); else window.addEventListener("load", go);
+  }
+  /* Loads questions/<topic id>.js, which fills QUESTIONS["<topic id>"]. */
+  function loadQuestions(id, box) {
+    var none = "<p>No questions have been added for this topic yet.</p>";
+    box.innerHTML = "<p>Loading questions...</p>";
+    var tag = document.createElement("script");
+    tag.src = "questions/" + id + ".js";
+    tag.onload = function () {
+      var list = window.QUESTIONS && window.QUESTIONS[id];
+      if (list && list.length) start(list); else box.innerHTML = none;
+    };
+    tag.onerror = function () { box.innerHTML = none; };
+    document.body.appendChild(tag);
+  }
+
   if (page === "home") {
     var hero = el("section", "hero",
       '<h1>Welcome to <span class="mark">mySSC prep</span></h1>' +
-      "<p>Notes, formula sheets and practice questions for SSC exams. Pick a subject to begin.</p>");
+      "<p>Practice questions for SSC exams. Pick a subject to begin.</p>");
     var grid = el("section", "subjects");
     SUBJECTS.forEach(function (s) {
       var html = "<h3>" + s.title + "</h3><p>" + s.blurb + "</p>";
@@ -39,7 +61,7 @@
       var ul = el("ul");
       sec.chapters.forEach(function (c) {
         var li = el("li");
-        if (c.notes || c.formulas || c.quiz) li.appendChild(link("chapter.html?s=" + s.id + "&c=" + c.id, "", c.title));
+        if (c.ready || c.quiz) li.appendChild(link("chapter.html?s=" + s.id + "&c=" + c.id, "", c.title));
         else li.innerHTML = c.title + " (coming soon)";
         ul.appendChild(li);
       });
@@ -57,12 +79,12 @@
     main.appendChild(el("p", "crumbs", '<a href="subject.html?s=' + sub.id + '">' + sub.title + "</a> / " + secTitle));
     main.appendChild(el("h1", "", ch.title));
 
-    if (ch.notes) {
+    if (SHOW_NOTES && ch.notes) {
       var n = el("section", "panel", "<h2>Notes</h2>");
       ch.notes.forEach(function (t) { n.appendChild(el("p", "", t)); });
       main.appendChild(n);
     }
-    if (ch.formulas || ch.tables) {
+    if (SHOW_NOTES && (ch.formulas || ch.tables)) {
       var f = el("section", "panel", "<h2>Formula sheet</h2>");
       (ch.formulas || []).forEach(function (t) { f.appendChild(el("div", "formula", t)); });
       (ch.tables || []).forEach(function (t) {
@@ -72,11 +94,11 @@
       });
       main.appendChild(f);
     }
-    if (ch.quiz) {
-      var qz = el("section", "panel", "<h2>Practice quiz</h2>");
+    if (ch.ready || ch.quiz) {
+      var qz = el("section", "panel", "<h2>Practice questions</h2>");
       var box = el("div"); box.id = "quiz"; qz.appendChild(box);
       main.appendChild(qz);
-      window.QUIZ = ch.quiz;   /* script.js (loaded next) builds the quiz */
+      if (ch.ready) loadQuestions(ch.id, box); else start(ch.quiz);
     }
   }
 })();
