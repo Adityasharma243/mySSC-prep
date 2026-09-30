@@ -102,3 +102,14 @@ button.button { font: inherit; font-weight: 700; cursor: pointer; }
 .time-taken { font-weight: 700; margin: 6px 0; }
 .solution { margin: 12px 0; padding: 12px 14px; border: 2px solid #12233f; border-left-width: 8px; border-radius: 8px; background: #fff; }
 .solution h4 { margin: 0 0 6px; }
+/* Add this to the very bottom of style.css (below the earlier additions) */
+
+.hi { font-family: "Noto Sans Devanagari", "Source Sans 3", sans-serif; }
+.panel h3 { margin: 18px 0 8px; }
+.note-list { list-style: none; padding: 0; margin: 0 0 12px; }
+.note-list li { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 0; border-bottom: 1px solid #d6dbe6; }
+.note-title { font-weight: 700; }
+.note-title .hi { display: block; font-weight: 400; font-size: 0.95rem; opacity: 0.85; }
+.note-links { display: flex; gap: 8px; }
+.note-btn { display: inline-block; padding: 4px 12px; border: 2px solid #12233f; border-radius: 8px; background: #f0a500; color: #12233f; font-weight: 700; font-size: 0.9rem; text-decoration: none; }
+.note-btn.soon { background: #eef0f5; color: #6b7385; border-style: dashed; font-weight: 400; }
