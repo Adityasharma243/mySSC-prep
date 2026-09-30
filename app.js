@@ -3,6 +3,12 @@
   /* Notes and formula sheets are hidden for now. Change false to true to bring them back. */
   var SHOW_NOTES = false;
 
+  /* Hindi font for the Hindi topic names */
+  var fontLink = document.createElement("link");
+  fontLink.rel = "stylesheet";
+  fontLink.href = "https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap";
+  document.head.appendChild(fontLink);
+
   var main = document.getElementById("app");
   var page = document.body.getAttribute("data-page");
   var params = new URLSearchParams(location.search);
@@ -18,6 +24,19 @@
   function missing() {
     main.appendChild(el("h1", "", "Page not found"));
     main.appendChild(link("index.html", "button", "Back to home"));
+  }
+
+  /* A notes button: a link when the PDF is set, a greyed "(soon)" label when it is not. */
+  function noteButton(href, label, lang) {
+    if (href) {
+      var a = el("a", "note-btn", label);
+      a.href = encodeURI(href); a.target = "_blank"; a.rel = "noopener";
+      if (lang) a.setAttribute("lang", lang);
+      return a;
+    }
+    var b = el("span", "note-btn soon", label + " (soon)");
+    if (lang) b.setAttribute("lang", lang);
+    return b;
   }
 
   /* Hands a list of questions to script.js once it is ready. */
@@ -57,22 +76,50 @@
     document.title = s.title + " - mySSC prep";
     main.appendChild(el("h1", "", s.title));
     s.sections.forEach(function (sec) {
-      var panel = el("section", "panel", "<h2>" + sec.title + "</h2>");
-      var ul = el("ul");
-      sec.chapters.forEach(function (c) {
-        var li = el("li");
-        if (c.ready || c.quiz) li.appendChild(link("chapter.html?s=" + s.id + "&c=" + c.id, "", c.title));
-        else li.innerHTML = c.title + " (coming soon)";
-        ul.appendChild(li);
-      });
-      panel.appendChild(ul); main.appendChild(panel);
+      var chapters = sec.chapters || [];
+      var topics = sec.noteTopics || [];
+      var panel = el("section", "panel");
+      if (!(s.sections.length === 1 && sec.title === s.title)) panel.appendChild(el("h2", "", sec.title));
+
+      if (topics.length) {
+        panel.appendChild(el("h3", "", "Notes"));
+        var nl = el("ul", "note-list");
+        topics.forEach(function (t) {
+          var li = el("li");
+          li.appendChild(el("span", "note-title", t.title + (t.titleHi ? '<span class="hi" lang="hi">' + t.titleHi + "</span>" : "")));
+          var links = el("span", "note-links");
+          links.appendChild(noteButton(t.en, "English", "en"));
+          links.appendChild(noteButton(t.hi, "हिन्दी", "hi"));
+          li.appendChild(links);
+          nl.appendChild(li);
+        });
+        panel.appendChild(nl);
+      }
+
+      if (chapters.length) {
+        if (topics.length) panel.appendChild(el("h3", "", "Practice questions"));
+        var ul = el("ul");
+        chapters.forEach(function (c) {
+          var li = el("li");
+          if (c.ready || c.quiz) li.appendChild(link("chapter.html?s=" + s.id + "&c=" + c.id, "", c.title));
+          else li.innerHTML = c.title + " (coming soon)";
+          ul.appendChild(li);
+        });
+        panel.appendChild(ul);
+      } else if (topics.length) {
+        panel.appendChild(el("h3", "", "Practice questions"));
+        panel.appendChild(el("p", "", "Coming soon."));
+      } else {
+        panel.appendChild(el("p", "", "Topics coming soon."));
+      }
+      main.appendChild(panel);
     });
     main.appendChild(link("index.html", "button", "Back to home"));
 
   } else if (page === "chapter") {
     var sub = subjectById(params.get("s")), ch, secTitle;
     if (sub && sub.sections) sub.sections.forEach(function (sec) {
-      sec.chapters.forEach(function (c) { if (c.id === params.get("c")) { ch = c; secTitle = sec.title; } });
+      (sec.chapters || []).forEach(function (c) { if (c.id === params.get("c")) { ch = c; secTitle = sec.title; } });
     });
     if (!ch) return missing();
     document.title = ch.title + " - mySSC prep";
