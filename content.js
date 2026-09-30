@@ -37,13 +37,29 @@ var SUBJECTS = [
               { q: "20 is what percent of 80?", options: ["20%","25%","30%","40%"], answer: 1 }
             ]
           },
-          { id: "profit-loss", title: "Profit and loss" },
-          { id: "time-work", title: "Time and work" }
+          { id: "ratio-proportion", title: "Ratio and Proportion" },
+          { id: "profit-loss", title: "Profit and Loss" },
+          { id: "discount", title: "Discount" },
+          { id: "time-work", title: "Time and Work" },
+          { id: "pipe-cistern", title: "Pipe and Cistern" },
+          { id: "time-speed-distance", title: "Time, Speed and Distance" },
+          { id: "train", title: "Train" },
+          { id: "race", title: "Race" },
+          { id: "average", title: "Average" },
+          { id: "partnership", title: "Partnership" },
+          { id: "mixture-alligation", title: "Mixture and Alligation" },
+          { id: "boat-stream", title: "Boat and Stream" },
+          { id: "si-ci", title: "SI & CI" },
+          { id: "dishonest-shopkeeper", title: "Dishonest Shopkeeper" },
+          { id: "installment", title: "Installment" },
+          { id: "problem-ages", title: "Problem on Ages" }
         ]
       },
       {
         title: "Advanced Maths",
         chapters: [
+          { id: "mensuration-2d", title: "2D Mensuration" },
+          { id: "mensuration-3d", title: "3D Mensuration" },
           {
             id: "algebra",
             title: "Algebra",
@@ -65,8 +81,15 @@ var SUBJECTS = [
               { q: "Solve for x: 3x − 7 = 11", options: ["4","5","6","18"], answer: 2 }
             ]
           },
+          { id: "trigonometry", title: "Trigonometry" },
+          { id: "height-distance", title: "Height and Distance" },
           { id: "geometry", title: "Geometry" },
-          { id: "trigonometry", title: "Trigonometry" }
+          { id: "di", title: "DI" },
+          { id: "probability", title: "Probability" },
+          { id: "statistics", title: "Statistics" },
+          { id: "coordinate-geometry", title: "Coordinate Geometry" },
+          { id: "quadratic-equation", title: "Quadratic Equation" },
+          { id: "permutations-combinations", title: "Permutations & Combinations" }
         ]
       }
     ]
