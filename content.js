@@ -1,9 +1,11 @@
-/* mySSC prep - ALL your content lives in this one file.
-   To add a chapter: copy a chapter block inside a section, paste it after
-   the last one (keep the comma between blocks), and change the text.
-   "id" must be short, lowercase, no spaces (it becomes part of the page link).
-   For each quiz question, "answer" is the position of the right option,
-   counting from 0 (first option = 0, second = 1, ...). */
+/* mySSC prep - the list of subjects, sections and topics lives in this file.
+   Questions do NOT go here. Each topic has its own file in the "questions" folder.
+
+   To turn a topic on:
+   1. Create questions/<id>.js (copy questions/_template.js and rename it to the topic's id)
+   2. Add   ready: true,   to that topic below.
+
+   "id" must be short, lowercase, no spaces. It must match the question file name. */
 
 var SUBJECTS = [
   {
@@ -17,6 +19,7 @@ var SUBJECTS = [
           {
             id: "percentage",
             title: "Percentage",
+            ready: true,
             notes: [
               "Percent means \"out of 100\". To find a percentage of a number, multiply the number by the percentage and divide by 100.",
               "For a change, always compare with the <strong>old</strong> value."
@@ -29,12 +32,6 @@ var SUBJECTS = [
             tables: [
               { head: ["Fraction", "Percentage"],
                 rows: [["1/2","50%"],["1/3","33.33%"],["1/4","25%"],["1/5","20%"],["1/8","12.5%"]] }
-            ],
-            quiz: [
-              { q: "What is 20% of 350?", options: ["60","70","75","80"], answer: 1 },
-              { q: "A price rises from 400 to 500. What is the percentage increase?", options: ["20%","22%","25%","30%"], answer: 2 },
-              { q: "A number is increased by 25% and then decreased by 20%. What is the net change?", options: ["No change","5% increase","5% decrease","10% increase"], answer: 0 },
-              { q: "20 is what percent of 80?", options: ["20%","25%","30%","40%"], answer: 1 }
             ]
           },
           { id: "ratio-proportion", title: "Ratio and Proportion" },
@@ -63,6 +60,7 @@ var SUBJECTS = [
           {
             id: "algebra",
             title: "Algebra",
+            ready: true,
             notes: [
               "Most SSC algebra questions are solved by using an identity, not by finding x and y one by one. Look for squares, cubes and a sum or product that is given to you."
             ],
@@ -73,12 +71,6 @@ var SUBJECTS = [
               "(a + b)³ = a³ + b³ + 3ab(a + b)",
               "a³ + b³ = (a + b)(a² − ab + b²)",
               "If x + 1/x = k, then x² + 1/x² = k² − 2"
-            ],
-            quiz: [
-              { q: "If x + y = 10 and xy = 21, what is x² + y²?", options: ["49","58","79","100"], answer: 1 },
-              { q: "What is the value of 101² − 99²?", options: ["200","300","400","404"], answer: 2 },
-              { q: "If x + 1/x = 3, what is x² + 1/x²?", options: ["5","7","9","11"], answer: 1 },
-              { q: "Solve for x: 3x − 7 = 11", options: ["4","5","6","18"], answer: 2 }
             ]
           },
           { id: "trigonometry", title: "Trigonometry" },
